@@ -18,20 +18,60 @@ For setup on any of these, refer to the startup documentation. You will be able 
 
 You can use any DB, for this I used a combo of Supabase and the built in Postgres DB from Railway. Both were easy to maintain.
 
-To run the app make sure to fill out anything in the `.env.template`. Then run `npm install`.
+# Set up
 
-When making test payments locally you will need to start the webhook server via this command:
+1. Run `npm install` or use your preferred package manager. 
+*You will need various keys from the above stack config to place in your `.env`. More below*
+
+2. When making test payments locally you will need to start the webhook server via this command:
 
 ```bash
 stripe listen --forward-to localhost:4242/webhook
 ```
 
-You can install Stripe CLI if you don't have it using the following command:
-
+*Note: You can install Stripe CLI if you don't have it using the following command:*
 ```bash
 brew install stripe/stripe-cli/stripe
+``` 
+
+# Customizing your config
+1. To run the app make sure to fill out anything in the `.env.template`. If you want to customize your CMS template for packages/services you will need to make changes to the following components: 
+ - appointment-card.svelte
+ - service-card.svelte
+ - testimonial-card.svelte
+
+ Make sure to make changes in the `$lib/graphql.ts` to change the schema for your new CMS. The current Schema is below for getting services, and below that is the testimonials for the site to give another instance: 
+
+ ```ts
+ const query = gql`
+		query ServicesIndex {
+			services {
+				id
+				name
+				slug
+				description
+				image
+				calendarType
+				packages {
+					id
+					name
+					slug
+					description
+					cost
+					discount
+					aggressiveFee
+					includes {
+						html
+					}
+				}
+			}
+		}
+	`;
 ```
+2. You may want to customize the `schema.prisma` file for your use case. Make sure to do a `npx prisma db push` command to change the schema on your DB if any changes are made to this file after initial push. 
+3. You may also want to customize or create your own queries in `lib/trpc`. If you do make sure to update any components where this may be called. You can remove as much as you need to start from where you want. 
+4. You can customize the `user` and `admin` routes as needed. You can add admins by changing the user role in the database. 
+5. Alternatively, you can also load local data in a `$lib/data/products.json` if you don't want to setup a CMS for this. This is not a directory setup, but is an example of one you can create.
 
-**You will need various keys from the above stack config to place in your `.env`.**
-
-**You can also load local data in a `$lib/data/products.json` if you don't want to setup a CMS for this.**
+## Questions? 
+If you have any questions on the setup here or how you can customize it to your needs, open a discussion [here](https://github.com/solhosty/sveltekit-stripe-template/discussions). 
