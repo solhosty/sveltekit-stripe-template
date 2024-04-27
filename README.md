@@ -1,4 +1,4 @@
-### Stripe / Sveltekit / CMS Template
+# Stripe / Sveltekit / CMS Template
 
 Hey all, I created this Stripe template for a family member's small business and figured I would share the simple process of importing products from a CMS, and creating a Stripe payment for the user.
 
@@ -18,7 +18,7 @@ For setup on any of these, refer to the startup documentation. You will be able 
 
 You can use any DB, for this I used a combo of Supabase and the built in Postgres DB from Railway. Both were easy to maintain.
 
-# Set up
+## Set up
 
 1. Run `npm install` or use your preferred package manager. 
 *You will need various keys from the above stack config to place in your `.env`. More below*
@@ -34,7 +34,7 @@ stripe listen --forward-to localhost:4242/webhook
 brew install stripe/stripe-cli/stripe
 ``` 
 
-# Customizing your config
+## Customizing your config
 1. To run the app make sure to fill out anything in the `.env.template`. If you want to customize your CMS template for packages/services you will need to make changes to the following components: 
  - appointment-card.svelte
  - service-card.svelte
